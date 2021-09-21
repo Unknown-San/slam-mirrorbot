@@ -15,6 +15,7 @@ from pyrogram import Client
 from telegraph import Telegraph
 
 import psycopg2
+import vars
 from psycopg2 import Error
 
 import socket
@@ -46,8 +47,8 @@ if CONFIG_FILE_URL is not None:
 
 load_dotenv('config.env')
 
-SERVER_PORT = os.environ.get('SERVER_PORT', None)
-PORT = os.environ.get('PORT', SERVER_PORT)
+SERVER_PORT = vars.SERVER_PORT
+PORT = vars.SERVER_PORT 
 web = subprocess.Popen([f"gunicorn wserver:start_server --bind 0.0.0.0:{PORT} --worker-class aiohttp.GunicornWebWorker"], shell=True)
 time.sleep(1)
 alive = subprocess.Popen(["python3", "alive.py"])
@@ -60,7 +61,7 @@ DRIVES_IDS = []
 INDEX_URLS = []
 
 def getConfig(name: str):
-    return os.environ[name]
+    return vars.name
 
 def mktable():
     try:
@@ -126,23 +127,23 @@ if os.path.exists('sudo_users.txt'):
         for line in lines:
             SUDO_USERS.add(int(line.split()[0]))
 try:
-    achats = getConfig('AUTHORIZED_CHATS')
+    achats = vars.AUTHORIZED_CHATS
     achats = achats.split(" ")
     for chats in achats:
         AUTHORIZED_CHATS.add(int(chats))
 except:
     pass
 try:
-    schats = getConfig('SUDO_USERS')
+    schats = vars.SUDO_USERS
     schats = schats.split(" ")
     for chats in schats:
         SUDO_USERS.add(int(chats))
 except:
     pass
 try:
-    BOT_TOKEN = getConfig('BOT_TOKEN')
-    parent_id = getConfig('GDRIVE_FOLDER_ID')
-    DOWNLOAD_DIR = getConfig('DOWNLOAD_DIR')
+    BOT_TOKEN = vars.BOT_TOKEN
+    parent_id = varsGDRIVE_FOLDER_ID
+    DOWNLOAD_DIR = vars.DOWNLOAD_DIR
     if not DOWNLOAD_DIR.endswith("/"):
         DOWNLOAD_DIR = DOWNLOAD_DIR + '/'
     DOWNLOAD_STATUS_UPDATE_INTERVAL = int(getConfig('DOWNLOAD_STATUS_UPDATE_INTERVAL'))
@@ -154,7 +155,7 @@ except KeyError as e:
     LOGGER.error("One or more env variables missing! Exiting now")
     exit(1)
 try:
-    DB_URI = getConfig('DATABASE_URL')
+    DB_URI = vars.DATABASE_URL
     if len(DB_URI) == 0:
         raise KeyError
 except KeyError:
@@ -191,21 +192,21 @@ telegraph.create_account(short_name=sname)
 telegraph_token = telegraph.get_access_token()
 
 try:
-    STATUS_LIMIT = getConfig('STATUS_LIMIT')
+    STATUS_LIMIT = vars.STATUS_LIMIT
     if len(STATUS_LIMIT) == 0:
         raise KeyError
     else:
-        STATUS_LIMIT = int(getConfig('STATUS_LIMIT'))
+        STATUS_LIMIT = int(vars.STATUS_LIMIT)
 except KeyError:
     STATUS_LIMIT = None
 try:
-    MEGA_API_KEY = getConfig('MEGA_API_KEY')
+    MEGA_API_KEY = vars.MEGA_API_KEY
 except KeyError:
     logging.warning('MEGA API KEY not provided!')
     MEGA_API_KEY = None
 try:
-    MEGA_EMAIL_ID = getConfig('MEGA_EMAIL_ID')
-    MEGA_PASSWORD = getConfig('MEGA_PASSWORD')
+    MEGA_EMAIL_ID = vars.MEGA_EMAIL_ID
+    MEGA_PASSWORD = vars.MEGA_PASSWORD
     if len(MEGA_EMAIL_ID) == 0 or len(MEGA_PASSWORD) == 0:
         raise KeyError
 except KeyError:
@@ -213,12 +214,12 @@ except KeyError:
     MEGA_EMAIL_ID = None
     MEGA_PASSWORD = None
 try:
-    UPTOBOX_TOKEN = getConfig('UPTOBOX_TOKEN')
+    UPTOBOX_TOKEN = vars.UPTOBOX_TOKEN
 except KeyError:
     logging.warning('UPTOBOX_TOKEN not provided!')
     UPTOBOX_TOKEN = None
 try:
-    INDEX_URL = getConfig('INDEX_URL')
+    INDEX_URL = vars.INDEX_URL
     if len(INDEX_URL) == 0:
         INDEX_URL = None
         INDEX_URLS.append(None)
@@ -252,7 +253,7 @@ try:
 except KeyError:
     TAR_UNZIP_LIMIT = None
 try:
-    BUTTON_FOUR_NAME = getConfig('BUTTON_FOUR_NAME')
+    BUTTON_FOUR_NAME = varsBUTTON_FOUR_NAME
     BUTTON_FOUR_URL = getConfig('BUTTON_FOUR_URL')
     if len(BUTTON_FOUR_NAME) == 0 or len(BUTTON_FOUR_URL) == 0:
         raise KeyError
@@ -261,14 +262,14 @@ except KeyError:
     BUTTON_FOUR_URL = None
 try:
     BUTTON_FIVE_NAME = getConfig('BUTTON_FIVE_NAME')
-    BUTTON_FIVE_URL = getConfig('BUTTON_FIVE_URL')
+    BUTTON_FIVE_URL = ('BUTTON_FIVE_URL')
     if len(BUTTON_FIVE_NAME) == 0 or len(BUTTON_FIVE_URL) == 0:
         raise KeyError
 except KeyError:
     BUTTON_FIVE_NAME = None
     BUTTON_FIVE_URL = None
 try:
-    BUTTON_SIX_NAME = getConfig('BUTTON_SIX_NAME')
+    BUTTON_SIX_NAME = ('BUTTON_SIX_NAME')
     BUTTON_SIX_URL = getConfig('BUTTON_SIX_URL')
     if len(BUTTON_SIX_NAME) == 0 or len(BUTTON_SIX_URL) == 0:
         raise KeyError

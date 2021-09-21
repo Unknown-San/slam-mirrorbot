@@ -1,5 +1,5 @@
 # Remove this line before deploying
-_____REMOVE_THIS_LINE_____=True
+# _____REMOVE_THIS_LINE_____=True
 
 # REQUIRED CONFIG
 BOT_TOKEN = "2045768285:AAEp42S5ZLwyK0jTCAJRh6kAhndOkf_6RKE"
